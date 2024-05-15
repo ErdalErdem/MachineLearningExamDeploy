@@ -2,14 +2,11 @@ import sys
 from PIL import Image
 import numpy as np
 import tensorflow as tf
-<<<<<<< HEAD
 import warnings
 
 # Suppress specific warnings
 warnings.filterwarnings("ignore", category=UserWarning, message=".*NotOpenSSLWarning.*")
 warnings.filterwarnings("ignore", category=UserWarning, message=".*Compiled the loaded model.*")
-=======
->>>>>>> a45bbfdea96f94c4da0f70c18eb2fbadfd146478
 
 def load_model():
     # Load the pre-trained model
@@ -36,7 +33,6 @@ def predict(image_path):
     image_array = preprocess_image(image_path)
     # Make predictions
     predictions = model.predict(image_array)
-<<<<<<< HEAD
     print(f"Predictions: {predictions}")  # Debug: print the predictions
     # Get the index of the class with the highest probability
     predicted_class_index = np.argmax(predictions)
@@ -54,13 +50,6 @@ def predict(image_path):
         predicted_class = class_names[predicted_class_index]
     else:
         predicted_class = "Unknown"
-=======
-    # Get the index of the class with the highest probability
-    predicted_class_index = np.argmax(predictions)
-    # Map the class index to the class name (assuming you have a list of class names)
-    class_names = ['apple', 'banana', 'cherry', 'date', 'grape', 'kiwi', 'lemon', 'mango', 'orange', 'strawberry']
-    predicted_class = class_names[predicted_class_index]
->>>>>>> a45bbfdea96f94c4da0f70c18eb2fbadfd146478
     return predicted_class
 
 if __name__ == "__main__":
