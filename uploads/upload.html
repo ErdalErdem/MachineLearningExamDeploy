@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -137,19 +136,6 @@
         </form>
         <div id="result"></div>
     </div>
-=======
-<html>
-<head>
-    <title>Upload and Predict</title>
-</head>
-<body>
-    <h1>Upload an Image to Predict the Fruit</h1>
-    <form id="predictForm" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*">
-        <button type="submit">Predict</button>
-    </form>
-    <div id="result"></div>
->>>>>>> a45bbfdea96f94c4da0f70c18eb2fbadfd146478
     <script>
         document.getElementById('predictForm').addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -162,7 +148,6 @@
             const result = await response.text();
             document.getElementById('result').innerText = result;
         });
-<<<<<<< HEAD
 
         document.getElementById('modeToggle').addEventListener('change', function(event) {
             if (event.target.checked) {
@@ -173,8 +158,7 @@
                 document.body.classList.add('light-mode');
             }
         });
-=======
->>>>>>> a45bbfdea96f94c4da0f70c18eb2fbadfd146478
     </script>
 </body>
 </html>
+
