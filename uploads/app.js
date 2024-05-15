@@ -33,7 +33,7 @@ const upload = multer({ storage: storage });
 
 // Serve the HTML file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'upload.html'));
+    res.sendFile(path.join(__dirname, '/uploads/upload.html'));
 });
 
 // Endpoint to handle image uploads and predictions
