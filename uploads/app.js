@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Ensure the uploads directory exists
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -33,7 +33,7 @@ const upload = multer({ storage: storage });
 
 // Serve the HTML file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/uploads/upload.html'));
+    res.sendFile(path.join(__dirname, 'upload.html'));
 });
 
 // Endpoint to handle image uploads and predictions
