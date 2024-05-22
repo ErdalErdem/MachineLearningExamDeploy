@@ -1,87 +1,35 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const multer = require('multer');
 const { spawn } = require('child_process');
-const path = require('path');
-const fs = require('fs');
-
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
-// Ensure the uploads directory exists
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir);
-}
+app.use(express.static('uploads'));  // Serve static files
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Serve static files from the 'uploads' directory
-app.use('/uploads', express.static(uploadsDir));
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    }
-});
-
-const upload = multer({ storage: storage });
-
-// Serve the HTML file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'upload.html'));
+    res.sendFile(__dirname + '/upload.html');
 });
 
-// Endpoint to handle image uploads and predictions
-app.post('/predict', upload.single('image'), (req, res) => {
-    const imagePath = req.file.path;
-
-    // Log the file path
-    console.log(`Uploaded file path: ${imagePath}`);
-
-    // Use the full path to the Python executable
-    const pythonExecutable = '/usr/bin/python3'; // Replace with the correct path
-    const pythonProcess = spawn(pythonExecutable, ['predict.py', imagePath]);
-
-    let prediction = '';
-    let errorMessages = '';
-    let errorOccurred = false;
+app.get('/predict', (req, res) => {
+    const pythonProcess = spawn('python', ['predict.py']);
 
     pythonProcess.stdout.on('data', (data) => {
-        prediction += data.toString();
+        if (!res.headersSent) {
+            res.send(`Prediction: ${data}`);
+        }
     });
 
     pythonProcess.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-        errorMessages += data.toString();
+        if (!res.headersSent) {
+            console.error(`Error from Python: ${data}`);
+            res.status(500).send(`Error: ${data}`);
+        }
     });
 
     pythonProcess.on('close', (code) => {
-        if (code === 0 && !errorOccurred) {
-            res.send(prediction);
-        } else {
-            console.error(`Python script exited with code ${code}: ${errorMessages}`);
-            res.status(500).send("An error occurred during prediction.");
-        }
-
-        // Optionally delete the uploaded image after processing
-        fs.unlink(imagePath, (err) => {
-            if (err) console.error(`Failed to delete ${imagePath}: ${err}`);
-        });
+        console.log(`Child process exited with code ${code}`);
     });
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });
-
-module.exports = app;
-
-// ! Tester better comments
-// ? Tester better comments
-// Tester better comments
-// TODO Tester better comments 
