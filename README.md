@@ -107,3 +107,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgements
 
 Special thanks to all the contributors and the open-source community.
+## Additional info
+Dataset can be find here: https://www.kaggle.com/code/nimapourmoradi/fruits-and-vegetables-image-mobilenetv2/input
