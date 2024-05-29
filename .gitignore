@@ -132,3 +132,4 @@ dist
 # Ignore dataset directory
 test/
 uploads/
+fruit_model.h5/
